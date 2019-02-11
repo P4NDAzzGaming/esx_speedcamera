@@ -1,3 +1,20 @@
+-- BELOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE! --
+
+local useBilling = true -- OPTIONS: (true/false)
+local useCameraSound = true -- OPTIONS: (true/false)
+local useFlashingScreen = true -- OPTIONS: (true/false)
+
+-- ABOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE!  --
+
+
+
+
+
+
+
+
+
+
 local Keys = {
   ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
   ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
@@ -108,8 +125,28 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
+									-- FLASHING EFFECT (START)
+									if useFlashingScreen == true then
+										TriggerServerEvent('esx_speedcamera:openGUI')
+									end
+									
+									if useCameraSound == true then
+										TriggerServerEvent("InteractSound_SV:PlayOnSource", "speedcamera", 0.5)
+									end
+
+									if useFlashingScreen == true then
+										Citizen.Wait(200)
+										TriggerServerEvent('esx_speedcamera:closeGUI')
+									end
+									-- FLASHING EFFECT (END)
+								
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 60 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
-									TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
+									
+									if useBilling == true then
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
+									else
+										TriggerServerEvent('esx_speedcamera:PayBill60Zone')
+									end
 									
 									hasBeenCaught = true
 									Citizen.Wait(5000) -- This is here to make sure the player won't get fined over and over again by the same camera!
@@ -158,9 +195,29 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
-									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
-									TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
+									-- FLASHING EFFECT (START)
+									if useFlashingScreen == true then
+										TriggerServerEvent('esx_speedcamera:openGUI')
+									end
 									
+									if useCameraSound == true then
+										TriggerServerEvent("InteractSound_SV:PlayOnSource", "speedcamera", 0.5)
+									end
+									
+									if useFlashingScreen == true then
+										Citizen.Wait(200)
+										TriggerServerEvent('esx_speedcamera:closeGUI')
+									end
+									-- FLASHING EFFECT (END)								
+								
+									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
+									
+									if useBilling == true then
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
+									else
+										TriggerServerEvent('esx_speedcamera:PayBill80Zone')
+									end
+										
 									hasBeenCaught = true
 									Citizen.Wait(5000) -- This is here to make sure the player won't get fined over and over again by the same camera!
 								end
@@ -208,9 +265,29 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
-									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
-									TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
+									-- FLASHING EFFECT (START)
+									if useFlashingScreen == true then
+										TriggerServerEvent('esx_speedcamera:openGUI')
+									end
 									
+									if useCameraSound == true then
+										TriggerServerEvent("InteractSound_SV:PlayOnSource", "speedcamera", 0.5)
+									end
+									
+									if useFlashingScreen == true then
+										Citizen.Wait(200)
+										TriggerServerEvent('esx_speedcamera:closeGUI')
+									end
+									-- FLASHING EFFECT (END)
+								
+									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
+									
+									if useBilling == true then
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
+									else
+										TriggerServerEvent('esx_speedcamera:PayBill120Zone')
+									end
+										
 									hasBeenCaught = true
 									Citizen.Wait(5000) -- This is here to make sure the player won't get fined over and over again by the same camera!
 								end
@@ -226,3 +303,14 @@ Citizen.CreateThread(function()
 end)
 
 -- 120 ZONE (END)
+
+RegisterNetEvent('esx_speedcamera:openGUI')
+AddEventHandler('esx_speedcamera:openGUI', function()
+    SetNuiFocus(false,false)
+    SendNUIMessage({type = 'openSpeedcamera'})
+end)   
+
+RegisterNetEvent('esx_speedcamera:closeGUI')
+AddEventHandler('esx_speedcamera:closeGUI', function()
+    SendNUIMessage({type = 'closeSpeedcamera'})
+end)

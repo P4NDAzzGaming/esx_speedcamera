@@ -5,11 +5,15 @@ description 'ESX Speedcamera'
 version '0.0.1'
 
 server_scripts {
-  '@es_extended/locale.lua',
-  '@mysql-async/lib/MySQL.lua',
   'server/main.lua'
 }
 
 client_scripts {
   'client/main.lua'
+}
+
+ui_page('html/index.html')
+
+files {
+    'html/index.html'
 }
