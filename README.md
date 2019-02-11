@@ -3,6 +3,7 @@ Requirements:
 * ESX_BILLING
 * ESX_POLICEJOB
 * pNotify
+* InteractSound
 
 Features:
 * The speed is currently in KMH and not MPH.
@@ -12,9 +13,14 @@ Features:
 * Blacklisted vehicles are currently: "POLICE", "POLICE2", "POLICE3", "POLICE4", "POLICEB", "POLICET" and "FIRETRUK". I did not get the "AMBULANCE" to work so that's up to you to solve.
 * Notifications are based on pNotify, placed left to center, a bit above the minimap.
 * You'll not be able to get caught by same camera for five seconds after you've already been caught speeding.
+* Flashing screen when getting caught.
+* Sound when getting caught.
+* Settings in client.lua where you can modify the script.
+* Optional to use ESX_BILLING, as default it's active, change it in the settings in client.lua to your own preferences.
 
 Installation:
 1. Extract esx_speecamera.rar into your resource folder.
+2. Move the speedcamera.ogg into "InteractSound", make sure you load the .ogg file in the "__resource.lua" inside of "InteractSound"
 2. Start the script in your server.cfg or wherever you start scripts. Correct row: **start esx_speedcamera**
 4. Start/Restart your server.
 5. Done, have a safe drive!
