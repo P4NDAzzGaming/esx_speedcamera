@@ -82,15 +82,6 @@ local Speedcamera120Zone = {
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        for k in pairs(Speedcamera60Zone) do
-            DrawMarker(27, Speedcamera60Zone[k].x, Speedcamera60Zone[k].y, Speedcamera60Zone[k].z, 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 0.5001, 0, 255, 50, 200, 0, 0, 0, 0)
-        end
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
 
         for k in pairs(Speedcamera60Zone) do
 
@@ -141,15 +132,6 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        for k in pairs(Speedcamera80Zone) do
-            DrawMarker(27, Speedcamera80Zone[k].x, Speedcamera80Zone[k].y, Speedcamera80Zone[k].z, 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 0.5001, 0, 255, 50, 200, 0, 0, 0, 0)
-        end
-    end
-end)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
 
         for k in pairs(Speedcamera80Zone) do
 
@@ -196,15 +178,6 @@ end)
 -- 80 ZONE (END)
 
 -- 120 ZONE (START)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        for k in pairs(Speedcamera120Zone) do
-            DrawMarker(27, Speedcamera120Zone[k].x, Speedcamera120Zone[k].y, Speedcamera120Zone[k].z, 0, 0, 0, 0, 0, 0, 1.001, 1.0001, 0.5001, 0, 255, 50, 200, 0, 0, 0, 0)
-        end
-    end
-end)
 
 Citizen.CreateThread(function()
     while true do
