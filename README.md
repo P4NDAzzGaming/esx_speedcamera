@@ -4,6 +4,7 @@ Requirements:
 * ESX_POLICEJOB
 * pNotify
 * InteractSound
+* ESX_PHONE
 
 Features:
 * The speed is currently in KMH and not MPH.
@@ -17,6 +18,7 @@ Features:
 * Sound when getting caught.
 * Settings in client.lua where you can modify the script.
 * Optional to use ESX_BILLING, as default it's active, change it in the settings in client.lua to your own preferences.
+* Police will be alarmed if someone pass any camera above 150 KMH, it's configurable but as default it's 150 KMH.
 
 Installation:
 1. Extract esx_speecamera.rar into your resource folder.
