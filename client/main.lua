@@ -3,6 +3,9 @@
 local useBilling = true -- OPTIONS: (true/false)
 local useCameraSound = true -- OPTIONS: (true/false)
 local useFlashingScreen = true -- OPTIONS: (true/false)
+local useBlips = true -- OPTIONS: (true/false)
+local alertPolice = true -- OPTIONS: (true/false)
+local alertSpeed = 150 -- OPTIONS: (1-5000 KMH)
 
 -- ABOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE!  --
 
@@ -66,15 +69,17 @@ local blips = {
 
 Citizen.CreateThread(function()
 	for _, info in pairs(blips) do
-		info.blip = AddBlipForCoord(info.x, info.y, info.z)
-		SetBlipSprite(info.blip, info.id)
-		SetBlipDisplay(info.blip, 4)
-		SetBlipScale(info.blip, 0.5)
-		SetBlipColour(info.blip, info.colour)
-		SetBlipAsShortRange(info.blip, true)
-		BeginTextCommandSetBlipName("STRING")
-		AddTextComponentString(info.title)
-		EndTextCommandSetBlipName(info.blip)
+		if useBlips == true then
+			info.blip = AddBlipForCoord(info.x, info.y, info.z)
+			SetBlipSprite(info.blip, info.id)
+			SetBlipDisplay(info.blip, 4)
+			SetBlipScale(info.blip, 0.5)
+			SetBlipColour(info.blip, info.colour)
+			SetBlipAsShortRange(info.blip, true)
+			BeginTextCommandSetBlipName("STRING")
+			AddTextComponentString(info.title)
+			EndTextCommandSetBlipName(info.blip)
+		end
 	end
 end)
 
@@ -123,8 +128,18 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICEB" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICET" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
+								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "AMBULAN" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
+									-- ALERT POLICE (START)
+									if alertPolice == true then
+										if SpeedKM > alertSpeed then
+											local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1), false))
+											TriggerServerEvent('esx_phone:send', 'police', ' Someone passed the speed camera, above ' .. alertSpeed.. ' KMH', true, {x =x, y =y, z =z})
+										end
+									end
+									-- ALERT POLICE (END)								
+								
 									-- FLASHING EFFECT (START)
 									if useFlashingScreen == true then
 										TriggerServerEvent('esx_speedcamera:openGUI')
@@ -193,8 +208,18 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICEB" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICET" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
+								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "AMBULAN" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
+									-- ALERT POLICE (START)
+									if alertPolice == true then
+										if SpeedKM > alertSpeed then
+											local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1), false))
+											TriggerServerEvent('esx_phone:send', 'police', ' Someone passed the speed camera, above ' .. alertSpeed.. ' KMH', true, {x =x, y =y, z =z})
+										end
+									end
+									-- ALERT POLICE (END)								
+								
 									-- FLASHING EFFECT (START)
 									if useFlashingScreen == true then
 										TriggerServerEvent('esx_speedcamera:openGUI')
@@ -263,8 +288,18 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICEB" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICET" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
+								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "AMBULAN" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
 								else
+									-- ALERT POLICE (START)
+									if alertPolice == true then
+										if SpeedKM > alertSpeed then
+											local x,y,z = table.unpack(GetEntityCoords(GetPlayerPed(-1), false))
+											TriggerServerEvent('esx_phone:send', 'police', ' Someone passed the speed camera, above ' .. alertSpeed.. ' KMH', true, {x =x, y =y, z =z})
+										end
+									end
+									-- ALERT POLICE (END)
+								
 									-- FLASHING EFFECT (START)
 									if useFlashingScreen == true then
 										TriggerServerEvent('esx_speedcamera:openGUI')
