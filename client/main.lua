@@ -15,9 +15,6 @@ local alertSpeed = 150 -- OPTIONS: (1-5000 KMH)
 
 
 
-
-
-
 local Keys = {
   ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
   ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
@@ -119,7 +116,7 @@ Citizen.CreateThread(function()
 				
 				if SpeedKM > maxSpeed then
 					if IsPedInAnyVehicle(playerPed, false) then
-						if (GetPedInVehicleSeat(playerCar, -1) == playerPed) then 
+						if (GetPedInVehicleSeat(playerCar, -1) == playerPed) then
 							if hasBeenCaught == false then
 								if GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICE" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICE2" then -- BLACKLISTED VEHICLE
@@ -148,21 +145,21 @@ Citizen.CreateThread(function()
 									if useCameraSound == true then
 										TriggerServerEvent("InteractSound_SV:PlayOnSource", "speedcamera", 0.5)
 									end
-
+									
 									if useFlashingScreen == true then
 										Citizen.Wait(200)
 										TriggerServerEvent('esx_speedcamera:closeGUI')
 									end
-									-- FLASHING EFFECT (END)
+									-- FLASHING EFFECT (END)								
 								
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 60 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill60Zone')
 									end
-									
+										
 									hasBeenCaught = true
 									Citizen.Wait(5000) -- This is here to make sure the player won't get fined over and over again by the same camera!
 								end
@@ -199,7 +196,7 @@ Citizen.CreateThread(function()
 				
 				if SpeedKM > maxSpeed then
 					if IsPedInAnyVehicle(playerPed, false) then
-						if (GetPedInVehicleSeat(playerCar, -1) == playerPed) then 
+						if (GetPedInVehicleSeat(playerCar, -1) == playerPed) then					
 							if hasBeenCaught == false then
 								if GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICE" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICE2" then -- BLACKLISTED VEHICLE
@@ -238,7 +235,7 @@ Citizen.CreateThread(function()
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill80Zone')
 									end
@@ -318,7 +315,7 @@ Citizen.CreateThread(function()
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(closestPlayer), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill120Zone')
 									end
