@@ -89,7 +89,7 @@ Citizen.CreateThread(function()
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 60 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if Config.useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (60KM/H)', Config.SixtyFine) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill60Zone')
 									end
@@ -161,7 +161,7 @@ Citizen.CreateThread(function()
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if Config.useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (80KM/H)', Config.EightyFine) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill80Zone')
 									end
@@ -233,7 +233,7 @@ Citizen.CreateThread(function()
 									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if Config.useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (120KM/H)', Config.OneHundredTwentyFine) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill120Zone')
 									end
