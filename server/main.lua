@@ -10,21 +10,21 @@ RegisterServerEvent('esx_speedcamera:PayBill60Zone')
 AddEventHandler('esx_speedcamera:PayBill60Zone', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
-	xPlayer.removeMoney(500)
+	xPlayer.removeMoney(Config.SixtyFine)
 end)
 
 RegisterServerEvent('esx_speedcamera:PayBill80Zone')
 AddEventHandler('esx_speedcamera:PayBill80Zone', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
-	xPlayer.removeMoney(1000)	
+	xPlayer.removeMoney(config.EightyFine)	
 end)
 
 RegisterServerEvent('esx_speedcamera:PayBill120Zone')
 AddEventHandler('esx_speedcamera:PayBill120Zone', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
-	xPlayer.removeMoney(1500)
+	xPlayer.removeMoney(config.OneHundredTwentyFine)
 end)
 
 -- BILLS WITHOUT ESX_BILLING (END)
