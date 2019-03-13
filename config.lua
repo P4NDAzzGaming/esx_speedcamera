@@ -1,4 +1,5 @@
 Config = {}
+Config.Locale = 'en'
 -- BELOW IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE! --
 Config.useBilling = true --OPTIONS: (true/false)
 Config.useCameraSound = true -- OPTIONS: (true/false)
@@ -6,6 +7,10 @@ Config.useFlashingScreen = true -- OPTIONS: (true/false)
 Config.useBlips = true -- OPTIONS: (true/false)
 Config.alertPolice = true -- OPTIONS: (true/false)
 Config.alertSpeed = 150 -- OPTIONS: (1-5000 KMH)
+Config.SixtyFine = 500 -- DESIRED FINE AMOUNT FOR 60 KMH ZONE
+Config.EightyFine = 1000 -- DESIRED FINE AMOUNT FOR 80 KMH ZONE
+Config.OneHundredTwentyFine = 1500 -- DESIRED FINE AMOUNT FOR 120 KMH ZONE
+
 -- ABOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE!  --
 
 
