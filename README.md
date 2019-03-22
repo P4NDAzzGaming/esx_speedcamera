@@ -26,3 +26,5 @@ Installation:
 2. Start the script in your server.cfg or wherever you start scripts. Correct row: **start esx_speedcamera**
 4. Start/Restart your server.
 5. Done, have a safe drive!
+<br>
+Join my discord channel https://discord.gg/xncafqk
