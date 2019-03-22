@@ -1,3 +1,8 @@
+<br>
+<br>
+Join XxFri3ndlyxX discord channel https://discord.gg/xncafqk
+<br>  
+<br>
 Requirements:
 * ES_EXTENDED
 * ESX_BILLING
