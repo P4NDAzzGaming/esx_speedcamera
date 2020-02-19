@@ -1,5 +1,4 @@
 -- BELOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE! --
-
 local useBilling = true -- OPTIONS: (true/false)
 local useCameraSound = true -- OPTIONS: (true/false)
 local useFlashingScreen = true -- OPTIONS: (true/false)
@@ -7,29 +6,18 @@ local useBlips = true -- OPTIONS: (true/false)
 local alertPolice = true -- OPTIONS: (true/false)
 local alertSpeed = 150 -- OPTIONS: (1-5000 KMH)
 
+local defaultPrice60 = 100 -- THIS IS THE DEFAULT PRICE WITHOUT EXTRA COST FOR 60 ZONES
+local defaultPrice80 = 300 -- THIS IS THE DEFAULT PRICE WITHOUT EXTRA COST FOR 80 ZONES
+local defaultPrice120 = 500 -- THIS IS THE DEFAULT PRICE WITHOUT EXTRA COST FOR 120 ZONES
+
+local extraZonePrice10 = 100 -- THIS IS THE EXTRA COST IF 10 KM/H ABOVE LIMIT (REQUIRES "useBilling" to be set to true)
+local extraZonePrice20 = 500 -- THIS IS THE EXTRA COST IF 20 KM/H ABOVE LIMIT (REQUIRES "useBilling" to be set to true)
+local extraZonePrice30 = 1000 -- THIS IS THE EXTRA COST IF 30 KM/H ABOVE LIMIT (REQUIRES "useBilling" to be set to true)
 -- ABOVE IS YOUR SETTINGS, CHANGE THEM TO WHATEVER YOU'D LIKE & MORE SETTINGS WILL COME IN THE FUTURE!  --
 
-
-
-
-
-
-
-local Keys = {
-  ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
-  ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
-  ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
-  ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
-  ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-  ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
-  ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
-  ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
-  ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
-}
-
 ESX = nil
-
 local hasBeenCaught = false
+local finalBillingPrice = 0;
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -49,14 +37,15 @@ function hintToDisplay(text)
 	DisplayHelpTextFromStringLabel(0, 0, 1, -1)
 end
 
--- BLIP FOR SPEEDCAMERA (START)
-
+-- BLIP FOR SPEEDCAMERAS
 local blips = {
 	-- 60KM/H ZONES
 	{title="Speedcamera (60KM/H)", colour=1, id=1, x = -524.2645, y = -1776.3569, z = 21.3384}, -- 60KM/H ZONE
 	
 	-- 80KM/H ZONES
 	{title="Speedcamera (80KM/H)", colour=1, id=1, x = 2506.0671, y = 4145.2431, z = 38.1054}, -- 80KM/H ZONE
+	{title="Speedcamera (80KM/H)", colour=1, id=1, x = 1258.2006, y = 789.4199, z = 104.2190}, -- 80KM/H ZONE
+	{title="Speedcamera (80KM/H)", colour=1, id=1, x = 980.9982, y = 407.4164, z = 92.2374}, -- 80KM/H ZONE
 	
 	-- 120KM/H ZONES
 	{title="Speedcamera (120KM/H)", colour=1, id=1, x = 1584.9281, y = -993.4557, z = 59.3923}, -- 120KM/H ZONE
@@ -80,14 +69,15 @@ Citizen.CreateThread(function()
 	end
 end)
 
--- BLIP FOR SPEEDCAMERA (END)
-
+-- AREAS
 local Speedcamera60Zone = {
     {x = -524.2645,y = -1776.3569,z = 21.3384}
 }
 
 local Speedcamera80Zone = {
-    {x = 2506.0671,y = 4145.2431,z = 38.1054}
+    {x = 2506.0671,y = 4145.2431,z = 38.1054},
+    {x = 1258.2006,y = 789.4199,z = 103.2190},
+    {x = 980.9982,y = 407.4164,z = 92.2374}
 }
 
 local Speedcamera120Zone = {
@@ -96,14 +86,13 @@ local Speedcamera120Zone = {
     {x = 2871.7951,y = 3540.5795,z = 53.0930}
 }
 
--- 60 ZONE (START)
-
+-- ZONES
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(0)
+        Citizen.Wait(10)
 
+		-- 60 zone
         for k in pairs(Speedcamera60Zone) do
-
             local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, Speedcamera60Zone[k].x, Speedcamera60Zone[k].y, Speedcamera60Zone[k].z)
 
@@ -124,6 +113,7 @@ Citizen.CreateThread(function()
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICE4" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICEB" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "POLICET" then -- BLACKLISTED VEHICLE
+								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "SHERIFF" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "FIRETRUK" then -- BLACKLISTED VEHICLE
 								elseif GetDisplayNameFromVehicleModel(GetEntityModel(veh)) == "AMBULAN" then -- BLACKLISTED VEHICLE
 								-- VEHICLES ABOVE ARE BLACKLISTED
@@ -152,10 +142,20 @@ Citizen.CreateThread(function()
 									end
 									-- FLASHING EFFECT (END)								
 								
-									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 60 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
+									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 60 zone! Your speed: " .. math.floor(SpeedKM) .. " KM/H", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (60KM/H)', 500) -- Sends a bill from the police
+										if SpeedKM >= maxSpeed + 30 then
+											finalBillingPrice = defaultPrice60 + extraZonePrice30
+										elseif SpeedKM >= maxSpeed + 20 then
+											finalBillingPrice = defaultPrice60 + extraZonePrice20
+										elseif SpeedKM >= maxSpeed + 10 then
+											finalBillingPrice = defaultPrice60 + extraZonePrice10
+										else
+											finalBillingPrice = defaultPrice60
+										end
+										
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (60KM/H) - Your speed: ' .. math.floor(SpeedKM) .. ' KM/H - ', finalBillingPrice) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill60Zone')
 									end
@@ -171,19 +171,9 @@ Citizen.CreateThread(function()
 				end
             end
         end
-    end
-end)
-
--- 60 ZONE (END)
-
--- 80 ZONE (START)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-
-        for k in pairs(Speedcamera80Zone) do
-
+		
+		-- 80 zone
+		for k in pairs(Speedcamera80Zone) do
             local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, Speedcamera80Zone[k].x, Speedcamera80Zone[k].y, Speedcamera80Zone[k].z)
 
@@ -232,10 +222,20 @@ Citizen.CreateThread(function()
 									end
 									-- FLASHING EFFECT (END)								
 								
-									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
+									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 80 zone! Your speed: " .. math.floor(SpeedKM) .. " KM/H", type = "error", timeout = 5000, layout = "centerLeft"})
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (80KM/H)', 1000) -- Sends a bill from the police
+										if SpeedKM >= maxSpeed + 30 then
+											finalBillingPrice = defaultPrice80 + extraZonePrice30
+										elseif SpeedKM >= maxSpeed + 20 then
+											finalBillingPrice = defaultPrice80 + extraZonePrice20
+										elseif SpeedKM >= maxSpeed + 10 then
+											finalBillingPrice = defaultPrice80 + extraZonePrice10
+										else
+											finalBillingPrice = defaultPrice80
+										end
+									
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (80KM/H) - Your speed: ' .. math.floor(SpeedKM) .. ' KM/H - ', finalBillingPrice) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill80Zone')
 									end
@@ -251,19 +251,9 @@ Citizen.CreateThread(function()
 				end
             end
         end
-    end
-end)
-
--- 80 ZONE (END)
-
--- 120 ZONE (START)
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-
-        for k in pairs(Speedcamera120Zone) do
-
+		
+		-- 120 zone
+		for k in pairs(Speedcamera120Zone) do
             local plyCoords = GetEntityCoords(GetPlayerPed(-1), false)
             local dist = Vdist(plyCoords.x, plyCoords.y, plyCoords.z, Speedcamera120Zone[k].x, Speedcamera120Zone[k].y, Speedcamera120Zone[k].z)
 
@@ -312,10 +302,21 @@ Citizen.CreateThread(function()
 									end
 									-- FLASHING EFFECT (END)
 								
-									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone!", type = "error", timeout = 5000, layout = "centerLeft"})
+									TriggerEvent("pNotify:SendNotification", {text = "You've been caught by the speedcamera in a 120 zone! Your speed: " .. math.floor(SpeedKM) .. " KM/H", type = "error", timeout = 5000, layout = "centerLeft"})
+									
 									
 									if useBilling == true then
-										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (120KM/H)', 1500) -- Sends a bill from the police
+										if SpeedKM >= maxSpeed + 30 then
+											finalBillingPrice = defaultPrice120 + extraZonePrice30
+										elseif SpeedKM >= maxSpeed + 20 then
+											finalBillingPrice = defaultPrice120 + extraZonePrice20
+										elseif SpeedKM >= maxSpeed + 10 then
+											finalBillingPrice = defaultPrice120 + extraZonePrice10
+										else
+											finalBillingPrice = defaultPrice120
+										end
+									
+										TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(PlayerId()), 'society_police', 'Speedcamera (120KM/H) - Your speed: ' .. math.floor(SpeedKM) .. ' KM/H - ', finalBillingPrice) -- Sends a bill from the police
 									else
 										TriggerServerEvent('esx_speedcamera:PayBill120Zone')
 									end
@@ -333,8 +334,6 @@ Citizen.CreateThread(function()
         end
     end
 end)
-
--- 120 ZONE (END)
 
 RegisterNetEvent('esx_speedcamera:openGUI')
 AddEventHandler('esx_speedcamera:openGUI', function()
